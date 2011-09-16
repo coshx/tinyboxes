@@ -30,4 +30,6 @@ gem 'rest-graph' # only used for decoding facebook signed_request param
 # and rake tasks are available in development mode:
 group :development, :test do
   gem 'mysql2', '0.2.3'
+  gem 'heroku'
+  gem 'heroku_san'
 end

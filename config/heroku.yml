@@ -1,0 +1,32 @@
+#
+# Format:
+#
+# <heroku_san shorthand name>:
+#   app: <Heroku app name>
+#   config:
+#     - <Heroku config:var name>: <Heroku config:var value>
+#
+production:
+  app: tinyboxes-production
+  config:
+    BUNDLE_WITHOUT: "development:test"
+    FB_APP_ID: <%= ENV['FB_APP_ID'] || "<FB_APP_ID>" %>
+    FB_APP_SECRET: <%= ENV['FB_APP_SECRET'] || "<FB_APP_SECRET>" %>
+    FB_PAGE_NAME: <%= ENV['FB_PAGE_NAME'] || "TinyBoxes" %>
+#    GOOGLE_ANALYTICS: "UA-12345678-9-"
+
+staging:
+  app: tinyboxes-staging
+  config: &default
+    BUNDLE_WITHOUT: "development:test"
+    FB_APP_ID: <%= ENV['FB_APP_ID'] || "<FB_APP_ID>" %>
+    FB_APP_SECRET: <%= ENV['FB_APP_SECRET'] || "<FB_APP_SECRET>" %>
+    FB_PAGE_NAME: <%= ENV['FB_PAGE_NAME'] || "TinyBoxes-staging" %>
+
+demo:
+  app: unicef-tinyboxes-demo
+  config: &default
+    BUNDLE_WITHOUT: "development:test"
+    FB_APP_ID: <%= ENV['FB_APP_ID'] || "241186319261059" %>
+    FB_APP_SECRET: <%= ENV['FB_APP_SECRET'] || "241186319261059" %>
+    FB_PAGE_NAME: <%= ENV['FB_PAGE_NAME'] || "TinyBoxes-demo" %>
