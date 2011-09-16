@@ -68,7 +68,7 @@ class ApplicationController < ActionController::Base
   # Generate URL to a user's donate page within the app installed within our facebook page
   # (also see ApplicationController#route_to_donate_page)
   def in_facebook_page_donate_url(user)
-    "http://www.facebook.com/#{FB_PAGE_NAME}?sk=app_#{FB_APP_ID}&app_data=donate_#{user.donate_token}"
+    "http://apps.facebook.com/#{FB_PAGE_NAME}?sk=app_#{FB_APP_ID}&app_data=donate_#{user.donate_token}"
   end
   
 end
