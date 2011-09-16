@@ -56,7 +56,6 @@ GEM
     mini_fb (1.1.7)
       hashie
       rest-client
-    mysql2 (0.2.3)
     pg (0.11.0)
     polyglot (0.3.1)
     rack (1.2.3)
@@ -99,7 +98,6 @@ DEPENDENCIES
   heroku_san
   json_pure
   mini_fb
-  mysql2 (= 0.2.3)
   pg
   rails (= 3.0.9)
   rake (= 0.8.7)
