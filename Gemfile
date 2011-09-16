@@ -12,7 +12,7 @@ gem 'rails', '3.0.9'
 gem "mini_fb" # Used for oauth
 gem "json_pure"
 gem "haml"
-gem "rake", "0.8.7" # newer versions of rake have issues with rails 3
+gem "rake", "0.9.2"
 gem 'rest-graph' # only used for decoding facebook signed_request param
 gem 'pg'
 
