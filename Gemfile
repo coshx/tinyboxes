@@ -14,6 +14,7 @@ gem "json_pure"
 gem "haml"
 gem "rake", "0.8.7" # newer versions of rake have issues with rails 3
 gem 'rest-graph' # only used for decoding facebook signed_request param
+gem 'pg'
 
 # To use debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
 # gem 'ruby-debug'
