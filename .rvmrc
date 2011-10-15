@@ -1,1 +1,3 @@
-rvm 1.9.2-p290@unicef
+rvm_gemset_create_on_use_flag=1
+rvm 1.9.2-p290
+rvm --create use ruby-1.9.2-p290@unicef
