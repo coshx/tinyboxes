@@ -11,5 +11,5 @@ class User < ActiveRecord::Base
   def assign_donate_token
     self.donate_token = generate_token(10, :alpha_num) { |id| User.find_by_donate_token(id).nil? }
   end
-  
+
 end
