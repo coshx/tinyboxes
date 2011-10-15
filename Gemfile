@@ -8,6 +8,7 @@ gem "haml"
 gem "rake", "0.9.2"
 gem 'rest-graph' # only used for decoding facebook signed_request param
 gem 'pg'
+gem 'activemerchant'
 
 group :development, :test do
   gem 'heroku'

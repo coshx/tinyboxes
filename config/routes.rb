@@ -61,5 +61,6 @@ Tinyboxes::Application.routes.draw do
   match 'oauth_return' => 'sessions#oauth_return'
   match 'leaderboard' => 'leaderboard#board'
   match 'fake_donation' => 'donations#fake_donation'
+  match 'ipn' => 'donations#ipn'
   root :to => 'homepage#index'
 end
