@@ -15,4 +15,8 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'vcr'
   gem 'webmock'
+  gem 'cucumber-rails'
+  gem 'database_cleaner'
+  gem 'factory_girl_rails'
+  gem 'spork', '~> 0.9.0.rc'
 end

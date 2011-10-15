@@ -6,9 +6,12 @@ development:
   <<: *defaults
   database: unicef_tinyboxes_development
 
-test:
+test: &test
   <<: *defaults
   database: unicef_tinyboxes_test
 
 production:
   <<: *defaults
+
+cucumber:
+  <<: *test
