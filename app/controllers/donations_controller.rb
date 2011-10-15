@@ -30,12 +30,9 @@ class DonationsController < ApplicationController
   # Dummy code to add a donation
   def fake_donation
     if params[:donate_token]
-      User.transaction do
-        @original_user = User.find_by_donate_token(params[:donate_token])
-        if @original_user
-          @original_user.update_attribute(:money, @original_user.money + params[:amount].to_i)
-        end
-      end
+      Donation.create!(:amount => params[:amount].to_f, 
+                       :user => current_user, 
+                       :fundraiser => User.find_by_donate_token(params[:donate_token]))
     end
     render :action => 'thanks'
   end

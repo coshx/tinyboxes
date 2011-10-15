@@ -4,6 +4,7 @@
   %td.details
     .name
       %fb:name{:uid => user.fbid}
+        =user.name
     .raised
       =t 'leaderboard.total'
       %span.total= number_to_currency user.money

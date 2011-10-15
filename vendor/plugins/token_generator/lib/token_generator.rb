@@ -5,13 +5,13 @@ module TokenGenerator
     
     begin
       token = if what == :hex
-        ActiveSupport::SecureRandom.hex(64).first(size)
+        SecureRandom.hex(64).first(size)
       elsif what == :alpha_num
-        (1..size).map { alphanums[ActiveSupport::SecureRandom.random_number(alphanums.size)] }.join
+        (1..size).map { alphanums[SecureRandom.random_number(alphanums.size)] }.join
       elsif what == :alpha
-        (1..size).map { ('a'..'z').to_a[ActiveSupport::SecureRandom.random_number(26)] }.join
+        (1..size).map { ('a'..'z').to_a[SecureRandom.random_number(26)] }.join
       elsif what == :number
-        (1..size).map { ActiveSupport::SecureRandom.random_number(10) }.join
+        (1..size).map { SecureRandom.random_number(10) }.join
       end
     end while block_given? && !validity.call(token)
 

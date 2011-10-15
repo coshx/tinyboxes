@@ -16,12 +16,14 @@ ActiveRecord::Schema.define(:version => 20110725025153) do
   create_table "donations", :force => true do |t|
     t.integer  "user_id"
     t.string   "description"
-    t.decimal  "amount",      :precision => 8, :scale => 2, :default => 0.0
+    t.decimal  "amount",        :precision => 8, :scale => 2, :default => 0.0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "fundraiser_id"
   end
 
   add_index "donations", ["amount"], :name => "amount"
+  add_index "donations", ["fundraiser_id"], :name => "index_donations_on_fundraiser_id"
   add_index "donations", ["user_id"], :name => "user_id"
 
   create_table "users", :force => true do |t|
