@@ -61,3 +61,19 @@ function show_tweet_publish_popup(msg) {
   var url = "http://twitter.com/home?"+jQuery.param({status:msg});
   window.open(url, 'publish_tweet', 'toolbar=1,scrollbars=1,location=1,statusbar=1,menubar=1,resizable=1,width=500,height=400,left = 590,top = 325');
 }
+
+function donate_popup(url) {
+  window.open(url,'name','height=500,width=545');
+}
+
+
+
+
+
+
+
+
+
+
+
+

@@ -2,32 +2,48 @@ require 'activemerchant'
 require 'money'
 
 class DonationsController < ApplicationController
+
   include ActiveMerchant::Billing::Integrations
-  
+
   # Present donate button/form, optionally showing details of fund raiser user
   def donate
     @original_user = User.find_by_donate_token(params[:token])
   end
   
-  # Paypal instant payment notification
-  def ipn
-    # Create a notify object we must
+  def create
+
+    ActiveMerchant::Billing::Base.mode = :test
+
     notify = Paypal::Notification.new(request.raw_post)
 
-    #we must make sure this transaction id is not already completed
-
     if notify.acknowledge
-        begin
-            # if notify.complete?
+
+         begin
+
+          if notify.complete?
+
+            Donation.create!(:amount=> params[:amount].to_f,
+                 :user => User.find_by_donate_token(params[:custom]),
+                 :fundraiser => User.find_by_donate_token(params[:custom]))
+
+          else
+            p "Failed to verify Paypal's notification, please investigate"
+          end
+
+        rescue => e
+          p "Exception: "+e.message
+
+        ensure
+          # what needs to happen if exception?
         end
     else
-        # another reason to be suspicious
+      p "notify.acknowledge: "+notify.acknowledge
     end
 
-    render :nothing => true
+  render :nothing => true
   end
-  
-  # Dummy code to add a donation
+
+  # Dummy code to add a donation - this works, check donate.html.haml
   def fake_donation
     if params[:donate_token]
       Donation.create!(:amount => params[:amount].to_f, 

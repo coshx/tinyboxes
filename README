@@ -1,95 +1,113 @@
-Basic app structure
+
+
+App start up
+--------------------
+  1. Do git clone and normal start up tasks
+  2. Create a new heroku app
+  3. Register the new app with facebook and update new facebook data in app (see below)
+  5. Create new test accounts with paypal (see below)
+
+
+Desired work flow
 --------------------
 
-This canvas app is intended to run within a Facebook page. When clicking onto the app, anonymous (not authenticated) users see a page with explanation and a button to signup (as a fundraiser).
-
-Once authenticated, they see a slightly modified page with share/tweet/donate buttons.
-
-The only other page is the donate page. The app generates a special URL that the user can share with friends. Any donation made via that URL increases their leadboard total.
-
-Screenshots:
-https://github.com/tomriley/tinyboxes/tree/master/doc/screenshots
-
-Mockups:
-https://github.com/tomriley/tinyboxes/tree/master/doc/mockups
-
-The special donate URL actually points to the application via the Facebook page so it's a pretty long unwieldily URL but it does mean that everyone stays within the UNICEF Facebook page environment.
-
-The donate form is just a dummy form and just increments the fundraisers total. The next major step is to replace this with a real paypal button/form that ties the donation, when made, to the fundraiser.
+  1. user comes to site via facebook link on newsfeed about friend donating (or via unicef account trying to get people on board,
+     in which case there's no friend)
+  2. user is shown how much friend has raised total, and asked to donate to help the friend raise more (and a smaller link to skip this step)
+  3. user donates via paypal
+  4. user is thanked on the 'thank you' page, and asked to spread the word (through social media) to try and raise more than friends have raised
 
 
-Live demo:
+  #Current Functionality
+    - user comes to site and must sign in first  (using a button which may violate facebook terms of use)
+    - A link become visible which allows the user to donate
+    - A simulated ipn from paypal causes a donation to be created (also a simulated donation (from within app) causes a donation to be created
+    - The leaderboard reflects created donations
+    - Upon making a donation through paypal the user is redirected to a 'thank you' page
+
+  #Needed
+    Task 1) Improve strategy for user work flow
+    Task 2  Improve functionality to spec
+    Task 3) Install Cucumber tests to represent BDD
+
+
+Facebook specs
+--------------------
+  The desired functionality is for this app to integrate seamlessly as a facebook app.  However, the facebook app may need to redirect
+  to the standalone website.
+
+  #Current functionality
+    You can sign into the site using facebook
+    To re-establish facebook sign-in
+      1. Create a facebook app
+        -Go to https://developers.facebook.com/apps and click "Create New App"
+        -Follow through with registration and find App name, ID, secret
+      2. Update registration information into initializers/facebook.rb
+
+  #Needed
+      Seamless integration with facebook
+
+  #Facebook Notes:
+     - Use options for facebook registration called 'website' and 'app on facebook' for extended functionality
+     - Within index.html.haml there is associated functionality labeled "Donate via broken Facebook App"
+
+
+
+'King of the mountain' Gamification
+---------------------------------------
+  The idea is to have a competition among facebook friends to see who can get the most donations on the leaderboard, this donation-count
+  is composed of the money they personally donate, plus the money that friends-whom-they-refer donate
+
+  #Current functionality
+    The leaderboard is operating correctly upon donation creation
+
+  #Needed functionality
+    Currently, a successful paypal donation double-credits the donator with both the donation amount AND the referrer credit amount
+    So must work through logic for assigning credit to an optional referrer (:fundraiser).  This necessarily involves paypal.
+
+
+Paypal spec
 ------------
 
-There is a live demo page running here:
+  #Current Functionality
+     A simulated ipn does successfully post to the app, the app creates the donation and the donation is incremented
+     for the user of the donation token.
 
-http://www.facebook.com/pages/Tiny-Boxes-Test-Page/108040335960818?sk=app_224542400914446
+  #Needed
+     Task 1) Ensure that the actual donate button is sending an ipn
+     Task 2) Work through issues stemming from 'real' ipn (not simulated) -  will involve the form on donate.html.haml
+     Task 3) Ensure that the amount sent to paypal is the amount showing up as the donation amount
 
+  #Paypal notes to test current functionality
+     - All testing is done using simulated accounts through paypal sandbox which is https://www.sandbox.paypal.com,
+     when going live, new 'real' accounts are created and the paypal server being posted-to is changed to https://www.paypal.com
+     - Be aware that paypal server may be down and giving out 'Bad Request' for free.
 
-
-Things that don't work
-----------------------
-
-* Real donations
-* The tell a friend button (which is supposed to open a facebook 'send' dialog) stopped working at some point and I can't figure out why
-
-
-Deploying to Heroku
--------------------
-
-At the moment, things are written such that each facebook page using the app needs it's own deployment. This obviously isn't ideal. In the future the app should detect each facebook page install and create a new leaderboard for users scoped to that local UNICEF fund page.
-
-Instructions for deploying to heroku:
-
-(assuming a local clone from the github repository, heroku account, heroku gem installed etc)
-cd tinyboxes/
-heroku create
-git push heroku master
-
-
-Create a Facebook app:
----------------------------------------
-
-These are the important settings:
-(Assuming heroku app name is tiny-boxes-123...)
-Site URL: http://tiny-boxes-123.heroku.com
-Site Domain: tiny-boxes-123.heroku.com
-Canvas URL: http://tiny-boxes-123.heroku.com/
-Tab URL: http://tiny-boxes-123.heroku.com/
-
-
-Configure the Heroku app for your Facebook page:
-------------------------------------------------
-
-heroku config:add FB_APP_ID=<your fb app id> FB_APP_SECRET=<your fb app secret>
-
-(e.g. if page doesn't yet have a username:)
-heroku config:add FB_PAGE_NAME="pages/Tiny-Boxes-Test-Page/1080403234234"
-(e.g. when page has a username:)
-heroku config:add FB_PAGE_NAME="unicef"
-
-... eventually the same configuration mechanism should be used to specify the paypal account that's going to receive donations and the locale to use (when internationalised).
+     1. Sign up for developer account (https://developer.paypal.com/devscr?cmd=_signup-run) and sign in
+     2. Create buyer and seller test accounts
+        - click "Test Accounts" in nav-bar to the left -> https://developer.paypal.com/cgi-bin/devscr?cmd=_sandbox-acct-session)
+        - click 'preconfigured' for a new test account  -> https://developer.paypal.com/cgi-bin/devscr?cmd=_create-account-session
+        - etc ... need to go through process twice to create a buyer and seller account from these pages
+    3. Once buyer/seller created, need to set up the Seller account
+        - go to "Test Accounts" page of https://developer.paypal.com/devscr
+        - radio-button-click the seller account and hit the big yellow button "Enter Sandman Test Suite"
+    4. Enable ipn notification
+        - In the sandbox console, on the right hand side under Selling Preferences, click on the IPN Notifications link
+        - Enable the ipn notification with the url to @your_heroku_address/ipn
+    6. Enable redirect/return so that after paypal process, paypal will redirect the user back to the app
+        - In the sanbox console, on the right hand side under Selling Preferences, click on website selling preferences link
+        - Find correct field and set redirect/return to @your_heroku_address/thanks
+    7.  Set ipn url and transation type in the ipn simulator
+        - Back in https://developer.paypal.com/us/cgi-bin/devscr (not in the sandbox console), click 'Test Tools'->IPN simulator
+        - Enter @your_heroku_address/ipn for the url and 'Cart checkout' for transaction type.  (Cart checkout may be not the best choice)
+    8.  Set donation_token in simulated ipn form
+       - Get the app current_user's donate_token string.  It can be found as a param in the browser-url-location-field after clicking the 'donate' button
+         from the app homepage. It will be something like b4jszt0keu
+       - Copy/Paste this token string into the 'custom' field within the form for the IPN simulator (near the very bottom of the form).
+    9.  Run the simulated ipn
+    10. Check simulated ipn
+       - In terminal, do 'heroku logs' command which should show the post to /ipn
+       - On homepage, refresh page and the current_user's donations should be incremented
 
 
-Add the app to the facebook page
---------------------------------
 
-* Find the application "page" on facebook (the page that has a wall etc - it's not the actual app)
-* You'll find a link to add the app to a page
-
-
-TODO:
------
-
-* Update config/locales/en.yml with real text
-* Working paypal button/form on donate page
-* Use paypal Instant Payment Notifications api to match payments to origin user
-* Create shorter donation URLs that redirect to the long in-facebook-page donation urls (maybe using bitly api)
-* When visitor comes to the app via a donate link, allow visitor to navigate around app (to get more info), before returning to donate page. Maybe store donate\_token in a cookie or pass donate_token around via query params
-
-
-Future:
--------
-
-* Make the app installable on multiple pages, supporting separate leaderboards.
-* i18n - we're using standard Rails localisation features so this shouldn't be too hard

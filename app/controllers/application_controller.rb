@@ -5,7 +5,9 @@ class ApplicationController < ActionController::Base
   before_filter :route_to_donate_page
   helper_method :current_user, :logged_in?
   helper_method :in_facebook_page_donate_url, :in_facebook_page_app_url
-  
+
+
+
   def try_and_login_with_fb_cookie
     fb_info = MiniFB.parse_cookie_information(FB_APP_ID, cookies) # some users may have to use their API rather than the app. ID.
     return if fb_info.nil?
@@ -64,11 +66,11 @@ class ApplicationController < ActionController::Base
   def in_facebook_page_app_url
     "http://www.facebook.com/#{FB_PAGE_NAME}?sk=app_#{FB_APP_ID}"
   end
-  
+
   # Generate URL to a user's donate page within the app installed within our facebook page
   # (also see ApplicationController#route_to_donate_page)
   def in_facebook_page_donate_url(user)
-    "http://apps.facebook.com/#{FB_PAGE_NAME}?sk=app_#{FB_APP_ID}&app_data=donate_#{user.donate_token}"
-  end
+     "http://apps.facebook.com/#{FB_PAGE_NAME}?sk=app_#{FB_APP_ID}&app_data=donate_#{user.donate_token}"
+   end
   
 end
