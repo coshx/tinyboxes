@@ -56,11 +56,16 @@ Tinyboxes::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
   # match ':controller(/:action(/:id(.:format)))'
   match 'donate/:token' => 'donations#donate', :as => 'donate'
+
+  match 'donate' => 'donations#donate'
+
   match 'login' => 'sessions#login'
   match 'logout' => 'sessions#logout'
   match 'oauth_return' => 'sessions#oauth_return'
   match 'leaderboard' => 'leaderboard#board'
   match 'fake_donation' => 'donations#fake_donation'
-  match 'ipn' => 'donations#ipn'
+  match 'ipn' => 'donations#create'
+  match 'thanks' => 'donations#thanks'
+
   root :to => 'homepage#index'
 end

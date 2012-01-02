@@ -1,4 +1,5 @@
-%iframe{:allowfullscreen => "", :frameborder => "0", :height => "296", :src => "http://www.youtube.com/embed/cFgdQaCZW30?html5=1", :width => "520"}
+/cz: This works, just hiding it for now
+/%iframe{:allowfullscreen => "", :frameborder => "0", :height => "296", :src => "http://www.youtube.com/embed/cFgdQaCZW30?html5=1", :width => "520"}
 
 #unicef_logo
   = image_tag 'unicef11.png'
@@ -7,10 +8,14 @@
   .clearfix
     #buttons
       = link_to t('signed_in.ask_a_friend'), in_facebook_page_donate_url(current_user), :class => 'big-button tell'
-      = link_to_function t('signed_in.donate'), %(top.location.href='#{in_facebook_page_donate_url(current_user)}'), :class => 'big-button'
+      = link_to_function "Donate via broken Facebook App", %(top.location.href='#{in_facebook_page_donate_url(current_user)}'), :class => 'big-button'
+      = link_to_function "Donate via Standalone Website", %(top.location.href='/donate/#{current_user.donate_token}'), :class => 'big-button'
+      /cz: pop up syntax which could be useful later
+      /= link_to_function "Donate via Standalone Website with popup", "donate_popup('/donate/#{current_user.donate_token}')", :class => 'big-button'
+      /cz: donate_popup contained in public/javascripts/application.js
       = link_to t('signed_in.share'), in_facebook_page_donate_url(current_user), :class => 'big-button share'
-      = link_to_function t('signed_in.tweet'), "show_tweet_publish_popup('#{escape_javascript t('default_share_message')+' '+in_facebook_page_donate_url(current_user)}')", :class => 'big-button'
-      
+      = link_to_function t('signed_in.tweet'), "show_tweet_publish_popup('#{escape_javascript t('default_share_message')+' '+in_facebook_page_donate_url(current_user)}')", :class => 'big-button',:target => "_blank"
+
     #blurb
       %h1=t 'signed_in.heading'
       %p=t 'signed_in.intro'
@@ -20,9 +25,10 @@
   %p=t 'anon.intro'
   #find_out_now
     = link_to t('anon.find_out'), login_path, :class => 'big-button', :remote => true
-  
-%h2=t 'leaderboard.heading'
+
 #leaderboard
   %table
     - @leaders.each_with_index do |user, index|
       = render :partial => 'leaderboard/leader', :locals => {:user => user, :position => index+1}
+
+

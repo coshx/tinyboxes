@@ -17,6 +17,7 @@ class SessionsController < ApplicationController
     @response_hash = MiniFB.get(@access_token, 'me', :type=>nil)
     uid = @response_hash['id']
     user = User.find_by_fbid(uid)
+
     if user.nil?
       user = User.new
       user.fbid = uid
@@ -24,9 +25,16 @@ class SessionsController < ApplicationController
       user.token = @access_token
       user.save!
     end
+
     log_in_user!(user)
-    # Now redirect back to the app within facebook page
-    redirect_to in_facebook_page_app_url
+
+    #cz: The following was involved with logic that was integrating into facebook app, but now is not working
+      #Now redirect back to the app within facebook page
+      #redirect_to in_facebook_page_app_url
+
+    #instead,
+    redirect_to root_path
+
   end
   
 end

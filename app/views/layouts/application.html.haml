@@ -11,6 +11,10 @@
     = javascript_tag %(window.loggedIn = #{logged_in?})
     = javascript_tag %(window.defaultDonateMessage = '#{escape_javascript t('default_share_message')}')
     %body
+      - flash.each do |key, msg|
+        %div{:id => key}
+          %p= msg
+        .clear
       =# render :partial => 'shared/sidebar'
       #wrapper
         /

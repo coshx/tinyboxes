@@ -7,10 +7,10 @@
     %h2
       = image_tag "https://graph.facebook.com/#{@original_user.fbid}/picture", :width => 25
       = t('donate.original_user_thanks', :name => content_tag('fb:name', nil, :uid => @original_user.fbid)).html_safe
-    
 
+
+//this form_tag works, just not being rendered
 #placeholder
-  
   - form_tag fake_donation_path do
     = label_tag 'Test donation:'
     - if @original_user
@@ -18,8 +18,10 @@
     = text_field_tag :amount, '10'
     USD
     = submit_tag 'Submit'
-    
-  
+
+
+
+/cbz: ***please see readme notes for paypal implementation***
 %form{:action => "https://www.sandbox.paypal.com/cgi-bin/webscr", :method => "post", :name => "_xclick"}
   %input{:name => "cmd", :type => "hidden", :value => "_xclick"}
   %input{:name => "business", :type => "hidden", :value => "unicef_1318707264_biz@alephpoint.com"}
@@ -28,3 +30,4 @@
   Amount:
   = text_field_tag :amount, '1.00'
   %input{:alt => "Make payments with PayPal - it's fast, free and secure!", :border => "0", :name => "submit", :src => "http://www.paypal.com/en_US/i/btn/btn_donate_LG.gif", :type => "image"}
+
